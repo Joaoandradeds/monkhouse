@@ -12,7 +12,6 @@
  test("should avoid duplicated id", () =>{
     const repo = new MoradorRepositorio()
     const nome = "Lucaspicoron"
-    //const expected = {nome:, id: 0}
     repo.criaMorador(nome)
     repo.criaMorador(nome)
     const actual = repo.verificaMorador(0)

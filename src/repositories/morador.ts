@@ -1,13 +1,12 @@
-type Morador = {
-    id: number
-    nome: string
-}
+import { Morador } from "../entities"
 
 export class MoradorRepositorio {
     moradores: Morador[]
+
     constructor() {
         this.moradores = []
     }
+    
     criaMorador(nome:string) {
         const morador = {
             id: this.moradores.length,
@@ -24,6 +23,19 @@ export class MoradorRepositorio {
             }
         }
         return undefined
+    } 
+
+    verificaMoradorAleatorio() : Morador | undefined{
+        if(this.tamanhoLista() == 0){
+            return 
+        }
+
+        let morador
+        while(morador == undefined) {
+            const idMorador = Math.floor(Math.random() % this.tamanhoLista())
+            morador = this.verificaMorador(idMorador)
+        }
+        return morador
     }
 
     atualizaMorador(morador: Morador) {
@@ -46,8 +58,6 @@ export class MoradorRepositorio {
 
     tamanhoLista() : number{
         return this.moradores.length
-
-
     }
 }
 

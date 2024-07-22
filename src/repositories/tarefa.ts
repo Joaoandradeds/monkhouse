@@ -1,9 +1,6 @@
+import { Tarefa } from "../entities"
 
-interface Tarefa {
-    id: number
-    nome: string
-}
-class TarefaRepositorio {
+export class TarefaRepositorio {
     tarefas: Tarefa[]
     constructor() {
         this.tarefas = []
@@ -44,7 +41,26 @@ class TarefaRepositorio {
 
     }
 
+    tamanhoLista() {
+        return this.tarefas.length
+    }
+    tarefaAleatoria(): Tarefa | undefined {
+        if (this.tamanhoLista() == 0) {
+            return
+        }
+
+        let tarefa
+        while (tarefa == undefined) {
+
+
+
+            const idTarefa = Math.floor(Math.random() % this.tamanhoLista())
+            return this.lerTarefa(idTarefa)
+        }
+    }
+
+
+
 
 
 }
-
