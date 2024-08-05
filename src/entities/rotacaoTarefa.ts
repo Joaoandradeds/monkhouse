@@ -1,6 +1,9 @@
 export interface RotacaoTarefa{
+    id : number 
     idMorador : number
     idTarefa : number
-    fezTarefa: boolean
-    data : Date 
+    tarefaFeita: boolean
+    criadoEm : Date
+    feitoEm? : Date 
+
 }
