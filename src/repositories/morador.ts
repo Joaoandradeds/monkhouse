@@ -1,37 +1,33 @@
 import { Morador } from "../entities"
 
 export class MoradorRepositorio {
-    moradores: Morador[]
+    moradores: Record<number, Morador>
 
     constructor() {
-        this.moradores = []
+        this.moradores = {}
     }
-    
-    criaMorador(nome:string) {
-        const morador = {
-            id: this.moradores.length,
-            nome:nome
+
+    criaMorador(nome: string) {
+        const id = Object.keys(this.moradores).length
+
+        this.moradores[id] = {
+            id: id,
+            nome: nome
         }
-      
-        this.moradores.push(morador)
+
     }
 
     verificaMorador(id: number): Morador | undefined {
-        for (let m of this.moradores) {
-            if (m.id == id) {
-                return m
-            }
-        }
-        return undefined
-    } 
+        return this.moradores[id]
+    }
 
-    verificaMoradorAleatorio() : Morador | undefined{
-        if(this.tamanhoLista() == 0){
-            return 
+    verificaMoradorAleatorio(): Morador | undefined {
+        if (this.tamanhoLista() == 0) {
+            return
         }
 
         let morador
-        while(morador == undefined) {
+        while (morador == undefined) {
             const idMorador = Math.floor(Math.random() % this.tamanhoLista())
             morador = this.verificaMorador(idMorador)
         }
@@ -43,22 +39,18 @@ export class MoradorRepositorio {
             throw new Error("nome é obrigatorio")
         }
 
-        for (let i = 0; i < this.moradores.length; i++) {
-            if (this.moradores[i].id == morador.id) {
-                this.moradores[i] = morador
-            }
+        if (!(morador.id in this.moradores)) {
+            throw new Error("ID INEXISTENTE")
         }
+
+        this.moradores[morador.id] = morador
     }
 
     deletaMorador(id: number) {
-        this.moradores = this.moradores.filter(function (morador) {
-            return morador.id != id
-        })
+        delete this.moradores[id]
     }
 
-    tamanhoLista() : number{
-        return this.moradores.length
+    tamanhoLista(): number {
+        return Object.keys(this.moradores).length
     }
 }
-
-
