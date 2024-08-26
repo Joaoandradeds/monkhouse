@@ -1,23 +1,19 @@
+import express from "express"
 import { MoradorRepositorio, TarefaRepositorio } from "./repositories";
-import {TarefaService} from "./services"
 
-const moradorRepo = new MoradorRepositorio() 
+import { handleAtualizaTarefa, handleCriaTarefa, handleDeletaTarefa, handleLerPorId, handleLeTarefa } from "./handlers/tarefas";
 
-// const tarefaRepo = new TarefaRepositorio()
+const moradorRepo = new MoradorRepositorio()
 
-// const tarefaServices = new TarefaService()
+const tarefaRepo = new TarefaRepositorio()
 
+const app = express()
+app.use(express.json())
 
- /*
-    MORADORES
+app.post("/tarefas", handleCriaTarefa(tarefaRepo))
+app.get("/tarefas", handleLeTarefa(tarefaRepo))
+app.get("/tarefas/:id", handleLerPorId(tarefaRepo))
+app.patch("/tarefas/:id", handleAtualizaTarefa(tarefaRepo))
+app.delete("/tarefas/:id", handleDeletaTarefa(tarefaRepo))
 
-  Create -> POST /moradores
-  Read -> GET /moradores/:id
-  Read all -> GET /moradores?limit=10
-  Update -> PATCH /moradores/:id
-  Delete -> DELETE /moradores/:id
-
- */
-
-
-  
+app.listen("3000")

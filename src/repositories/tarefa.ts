@@ -1,66 +1,60 @@
 import { Tarefa } from "../entities"
 
 export class TarefaRepositorio {
-    tarefas: Tarefa[]
+    tarefas: Record<number, Tarefa>
+
     constructor() {
-        this.tarefas = []
+        this.tarefas = {}
     }
 
 
     criarTarefa(nome: string) {
-        let tarefa: Tarefa = {
-            id: 0,
+        const id = Object.keys(this.tarefas).length
+        this.tarefas[id] = {
+            id: id,
             nome: nome
-
         }
-        this.tarefas.push(tarefa)
 
     }
 
     lerTarefa(id: number): Tarefa | undefined {
-        for (let t of this.tarefas) {
-            if (t.id == id) {
-                return t
-            }
-        }
-
-    }
-    atualizaTarefa(tarefa: Tarefa) {
-        for (let i = 0; i < this.tarefas.length; i++) {
-            if (this.tarefas[i].id == tarefa.id) {
-                this.tarefas[i] = tarefa
-            }
-        }
+        return this.tarefas[id]
     }
 
-
-    deletaTarefa(id: number) {
-        this.tarefas = this.tarefas.filter(function (tarefa) {
-            return tarefa.id != id
-        })
-
+    lerTarefas(): Tarefa[] {
+        return Object.values(this.tarefas)
     }
 
-    tamanhoLista() {
-        return this.tarefas.length
-    }
-    tarefaAleatoria(): Tarefa | undefined {
+    verificaTarefaAleatoria(): Tarefa | undefined {
         if (this.tamanhoLista() == 0) {
             return
         }
-
-        let tarefa
-        while (tarefa == undefined) {
-
-
-
-            const idTarefa = Math.floor(Math.random() % this.tamanhoLista())
-            return this.lerTarefa(idTarefa)
-        }
+        const index = Math.floor(Math.random() * 10 % this.tamanhoLista()) 
+        return Object.values(this.tarefas)[index]
     }
 
 
 
+    atualizaTarefa(tarefa: Tarefa) : Tarefa {
+        if (tarefa.nome == "") {
+            throw new Error("nome da tarefa é obrigatorio!")
+        }
 
+        if (!(tarefa.id in this.tarefas)) {
+            throw new Error("ID de tarefa inexistente")
+        }
+        this.tarefas[tarefa.id] = tarefa
+        return tarefa
+    }
 
+    deletaTarefa(id: number) : Tarefa | undefined{
+        const tarefaDeletada = this.lerTarefa(id)
+        delete this.tarefas[id]
+        return tarefaDeletada
+    }
+
+    tamanhoLista(): number {
+        return Object.keys(this.tarefas).length
+    }
 }
+
