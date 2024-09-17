@@ -1,4 +1,4 @@
-import { Morador, Tarefa } from "../entities"
+import { Morador} from "../entities"
 
 export class MoradorRepositorio {
     moradores: Record<number, Morador>
@@ -36,7 +36,7 @@ export class MoradorRepositorio {
         return morador
     }
 
-    atualizaMorador(morador: Morador) {
+    atualizaMorador(morador: Morador) : Morador {
         if (morador.nome == "") {
             throw new Error("nome do morador é obrigatório")
         }
@@ -46,9 +46,10 @@ export class MoradorRepositorio {
         }
 
         this.moradores[morador.id] = morador
+        return morador
     }
 
-    deletaMorador(id: number) : Tarefa | undefined {
+    deletaMorador(id: number) : Morador | undefined {
         const moradorDeletado = this.lerMorador(id)
         delete this.moradores[id]
         return moradorDeletado

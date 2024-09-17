@@ -1,7 +1,16 @@
 
 import { Request, RequestHandler, Response } from "express"
-import { TarefaRepositorio } from "../repositories"
 import { Tarefa } from "../entities"
+
+
+// todas as funçoes que um repositorio deve ter
+interface TarefaRepositorio {
+  criarTarefa: (nome: string) => void
+  lerTarefa: (id: number) => Tarefa | undefined 
+  lerTarefas: () => Tarefa[]
+  atualizaTarefa: (tarefa: Tarefa) => Tarefa 
+  deletaTarefa: (id: number) => Tarefa | undefined
+}
 
 export function handleCriaTarefa(repo: TarefaRepositorio): RequestHandler {
   return (req: Request, res: Response) => {

@@ -1,15 +1,24 @@
 import express from "express"
-import { MoradorRepositorio, TarefaRepositorio } from "./repositories";
+import Database from "better-sqlite3"
 
+import { MoradorRepositorio, MemoriaTarefaRepositorio, SqliteTarefaRepositorio } from "./repositories";
 import { handleAtualizaTarefa, handleCriaTarefa, handleDeletaTarefa, handleLerPorId, handleLeTarefa } from "./handlers/tarefas";
 import { handleAtualizaMorador, handleCriaMorador, handleDeletaMorador, handleLerMorador, handleLerTodosMoradores } from "./handlers/morador";
 
+
+const monkDB = new Database("monk.db")
+
+
 const moradorRepo = new MoradorRepositorio()
 
-const tarefaRepo = new TarefaRepositorio()
+//const tarefaRepo = new MemoriaTarefaRepositorio()
+const tarefaRepo = new SqliteTarefaRepositorio(monkDB)
 
 const app = express()
 app.use(express.json())
+
+// Tarefas
+
 
 app.post("/tarefas", handleCriaTarefa(tarefaRepo))
 app.get("/tarefas", handleLeTarefa(tarefaRepo))
@@ -23,7 +32,6 @@ app.post("/moradores", handleCriaMorador(moradorRepo))
 app.get("/moradores/:id", handleLerMorador(moradorRepo))
 app.get("/moradores", handleLerTodosMoradores(moradorRepo))
 app.patch("/moradores/:id", handleAtualizaMorador(moradorRepo))
-app.delete("/moradores/:id",handleDeletaMorador((moradorRepo)))
+app.delete("/moradores/:id", handleDeletaMorador((moradorRepo)))
 
 app.listen("3000")
- 

@@ -1,6 +1,6 @@
 import { Tarefa } from "../entities"
 
-export class TarefaRepositorio {
+export class MemoriaTarefaRepositorio {
     tarefas: Record<number, Tarefa>
 
     constructor() {

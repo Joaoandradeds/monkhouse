@@ -1,6 +1,17 @@
 import { Request, RequestHandler, Response } from "express"
-import { MoradorRepositorio } from "../repositories"
+import { Morador } from "../entities"
 
+
+interface MoradorRepositorio{
+    criaMorador(nome: string): void
+    lerMorador(id: number): Morador | undefined
+    lerMoradores():  Morador[] 
+    verificaMoradorAleatorio(): Morador | undefined 
+    atualizaMorador(morador: Morador): Morador
+    deletaMorador(id: number):  Morador| undefined 
+    tamanhoLista(): number
+
+}
 
 export function handleCriaMorador(repo: MoradorRepositorio): RequestHandler {
     return (req: Request, res: Response) => {

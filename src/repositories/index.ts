@@ -1,3 +1,4 @@
 export * from "./morador"
-export * from "./tarefa"
+export * from "./MemoriaTarefa"
+export * from "./SqliteTarefa"
 export * from "./rotacaoTarefa"
