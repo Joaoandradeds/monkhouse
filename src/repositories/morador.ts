@@ -1,4 +1,4 @@
-import { Morador } from "../entities"
+import { Morador, Tarefa } from "../entities"
 
 export class MoradorRepositorio {
     moradores: Record<number, Morador>
@@ -9,7 +9,6 @@ export class MoradorRepositorio {
 
     criaMorador(nome: string) {
         const id = Object.keys(this.moradores).length
-
         this.moradores[id] = {
             id: id,
             nome: nome
@@ -17,8 +16,11 @@ export class MoradorRepositorio {
 
     }
 
-    verificaMorador(id: number): Morador | undefined {
+    lerMorador(id: number): Morador | undefined {
         return this.moradores[id]
+    }
+    lerMoradores(): Morador[] {
+        return Object.values(this.moradores) 
     }
 
     verificaMoradorAleatorio(): Morador | undefined {
@@ -29,14 +31,14 @@ export class MoradorRepositorio {
         let morador
         while (morador == undefined) {
             const idMorador = Math.floor(Math.random() % this.tamanhoLista())
-            morador = this.verificaMorador(idMorador)
+            morador = this.lerMorador(idMorador)
         }
         return morador
     }
 
     atualizaMorador(morador: Morador) {
         if (morador.nome == "") {
-            throw new Error("nome é obrigatorio")
+            throw new Error("nome do morador é obrigatório")
         }
 
         if (!(morador.id in this.moradores)) {
@@ -46,8 +48,10 @@ export class MoradorRepositorio {
         this.moradores[morador.id] = morador
     }
 
-    deletaMorador(id: number) {
+    deletaMorador(id: number) : Tarefa | undefined {
+        const moradorDeletado = this.lerMorador(id)
         delete this.moradores[id]
+        return moradorDeletado
     }
 
     tamanhoLista(): number {
