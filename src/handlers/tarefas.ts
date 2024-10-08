@@ -8,8 +8,8 @@ interface TarefaRepositorio {
   criarTarefa: (nome: string) => void
   lerTarefa: (id: number) => Tarefa | undefined 
   lerTarefas: () => Tarefa[]
-  atualizaTarefa: (tarefa: Tarefa) => Tarefa 
-  deletaTarefa: (id: number) => Tarefa | undefined
+  atualizaTarefa: (tarefa: Tarefa) => Tarefa | undefined
+  deletaTarefa: (id: number) => void
 }
 
 export function handleCriaTarefa(repo: TarefaRepositorio): RequestHandler {
@@ -48,6 +48,7 @@ export function handleAtualizaTarefa(repo: TarefaRepositorio): RequestHandler {
       res.json(retornaTarefa)
 
     } catch (error) {
+      console.log(error)
       res.status(400).json({ message: "Tarefa inexistente!" })
       return
     }
@@ -56,17 +57,15 @@ export function handleAtualizaTarefa(repo: TarefaRepositorio): RequestHandler {
 export function handleDeletaTarefa(repo: TarefaRepositorio): RequestHandler {
   return (req: Request, res: Response) => {
     const id = parseInt(req.params.id)
-    // interagir com o banco 
-    const deletaTarefa = repo.deletaTarefa(id)
+    // interagir com o banco
 
-    if (!deletaTarefa) {
+    try {
+      repo.deletaTarefa(id)
+    } catch(error){
       res.status(404).json({ message: "Tarefa inexistente!" })
-      return
+      return 
     }
-
-    // retornar tudo 
-    res.json(deletaTarefa)
-
+      res.status(200).json()
   }
 }
 
